@@ -367,6 +367,73 @@
   .hero-label { animation: fadeUp 0.8s ease both; }
   .hero-title { animation: fadeUp 0.8s 0.12s ease both; }
   .hero-body  { animation: fadeUp 0.8s 0.24s ease both; }
+
+  @media (max-width: 768px) {
+    nav {
+      padding: 1.2rem 1.5rem;
+      align-items: center;
+    }
+    .nav-logo {
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.62rem; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 60px;
+    }
+    .hero-left {
+      border-right: none;
+      border-bottom: 0.5px solid var(--rule);
+      padding: 3rem 1.5rem 2.5rem;
+    }
+    .hero-title {
+      font-size: clamp(3rem, 14vw, 5rem);
+      margin-bottom: 2rem;
+    }
+    .hero-right { grid-template-rows: auto auto; }
+    .hero-cell { padding: 2rem 1.5rem; }
+
+    .photo-section { height: 65vw; min-height: 260px; }
+    .photo-title { font-size: clamp(2.5rem, 12vw, 6rem); }
+    .photo-overlay { padding: 1.5rem; }
+    .photo-caption { display: none; }
+
+    .about { grid-template-columns: 1fr; }
+    .about-label { display: none; }
+    .about-content { padding: 3rem 1.5rem; }
+    .about-content p { font-size: 1.15rem; }
+
+    .practice { grid-template-columns: 1fr; }
+    .practice-label { display: none; }
+    .practice-grid { grid-template-columns: 1fr; }
+    .practice-card {
+      border-right: none !important;
+      padding: 2.5rem 1.5rem;
+    }
+    .practice-card:nth-last-child(-n+3) {
+      border-bottom: 0.5px solid var(--rule) !important;
+    }
+    .practice-card:last-child { border-bottom: none !important; }
+
+    .contact { grid-template-columns: 1fr; }
+    .contact-left {
+      border-right: none;
+      border-bottom: 0.5px solid var(--rule);
+      padding: 3rem 1.5rem;
+    }
+    .contact-left h2 { font-size: clamp(2.2rem, 10vw, 3.5rem); margin-bottom: 2rem; }
+    .contact-right { padding: 2.5rem 1.5rem; }
+
+    footer {
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 0.4rem;
+      text-align: center;
+    }
+  }
 </style>
 </head>
 <body>
