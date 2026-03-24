@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atelier Non-Fiction</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjZjVmMmVjIi8+PHBhdGggZD0iTTE2IDYgTDI4IDE2IEwyNSAxNiBMMjUgMjYgTDE5IDI2IEwxOSAyMCBMMTMgMjAgTDEzIDI2IEw3IDI2IEw3IDE2IEw0IDE2IFoiIGZpbGw9IiMwZTBlMGMiLz48L3N2Zz4=">
-<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAIAEBAAAAAAIADzAQAAJgAAACAgAAAAACAAJQEAABkCAACJUE5HDQoaCgAAAA1JSERSAAAAEAAAABAIAgAAAJCRaDYAAAG6SURBVHiclZLPbtNAEMZnHMfryvGfuEEC8g6oqG8BpC3v0Da5FRAvgxAgrggJAS+BkBAVqpQjXAqJEjVaN8ZZ2zPDYZHbKAfEag+z3863mp35YZ7N4X+WuymJSBMj4j8MzOy6btt1BaCu67quHce5nrB2ICKllNNqnTx+evLoCTqOUoqI1p7Ms7nd+mLCVT75+eNg/4G92h/c+3X+XapcX0yatL+GbDEVMd++ft7d3QGANE3SNAGAuzt3Tr98EimzxfTKsNQzoeLj+7f9/i233UrTJIo6UdRJ06TdbvVv3/zw7o3Q76We5dkclnpWFvr1q+fdbry1pdJuHEWdOA7jOIyijhW7SfzyxbOy0Es9cxBxtVrdHxyMhkdlWQMiM1dVVVUVMyNiWdaj0dFg7+GqKBDRtY3f3u4FQUBEIuL7vlIKAIwxREREQRD0ejeyxfSqrSJMRIio9eXw+HA8PhuPz4bHh1pfIiIRifDa4BCRmUVERDzPC8MuAHiex8x2ms3I3QYH3/fDMLR5wqUNrOL7fsMLWvgQ0RhjjAEApVTzh+uK9WBDq+M4FhtmtpVsKmvwMbPFpil3UwGAPyKvEIPUX7HTAAAAAElFTkSuQmCCiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAA7ElEQVR4nGP8+ukNAy0BE01NH7VgqFnw9+/f2rrG0vLK379/E6+LhUh1Hz9+TM3IPnz4CAMDw8NHj2fPmMrPz0+MRqJ8cP/BQ9+AYIjpDAwMhw8f8fT2u337DnUswGocmpXkW7Bk6fLouMSPHz9iSn38+DEyJn723Hn4TWDEVVT8/fu3obFlzrz5BN0YEx3Z1tLEyspKggXIUUoMsLW1wRXtWIKI+PCFAzzRjm4BSSmEGGehWIAnSokBWKMdexxIyiiQYcHzJw8wBQdTWTRILSC2sMMMXyLjaegH0agFBAHO4ppaYOgH0agFBAEAjJZ/rHw0ROsAAAAASUVORK5CYII=">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -370,71 +369,50 @@
   .hero-title { animation: fadeUp 0.8s 0.12s ease both; }
   .hero-body  { animation: fadeUp 0.8s 0.24s ease both; }
 
+  .footer-impressum {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    opacity: 0.7;
+    width: 100%;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid var(--rule);
+    line-height: 1.8;
+    margin-top: 0.25rem;
+  }
+  footer {
+    flex-wrap: wrap;
+  }
+
   @media (max-width: 768px) {
-    nav {
-      padding: 1.2rem 1.5rem;
-      align-items: center;
-    }
-    .nav-logo {
-      font-size: 0.82rem;
-      white-space: nowrap;
-    }
+    nav { padding: 1.2rem 1.5rem; align-items: center; }
+    .nav-logo { font-size: 0.82rem; white-space: nowrap; }
     .nav-links { gap: 1.2rem; }
     .nav-links a { font-size: 0.62rem; }
-
-    .hero {
-      grid-template-columns: 1fr;
-      padding-top: 60px;
-    }
-    .hero-left {
-      border-right: none;
-      border-bottom: 0.5px solid var(--rule);
-      padding: 3rem 1.5rem 2.5rem;
-    }
-    .hero-title {
-      font-size: clamp(3rem, 14vw, 5rem);
-      margin-bottom: 2rem;
-    }
+    .hero { grid-template-columns: 1fr; padding-top: 60px; }
+    .hero-left { border-right: none; border-bottom: 0.5px solid var(--rule); padding: 3rem 1.5rem 2.5rem; }
+    .hero-title { font-size: clamp(3rem, 14vw, 5rem); margin-bottom: 2rem; }
     .hero-right { grid-template-rows: auto auto; }
     .hero-cell { padding: 2rem 1.5rem; }
-
     .photo-section { height: 65vw; min-height: 260px; }
     .photo-title { font-size: clamp(2.5rem, 12vw, 6rem); }
     .photo-overlay { padding: 1.5rem; }
     .photo-caption { display: none; }
-
     .about { grid-template-columns: 1fr; }
     .about-label { display: none; }
     .about-content { padding: 3rem 1.5rem; }
     .about-content p { font-size: 1.15rem; }
-
     .practice { grid-template-columns: 1fr; }
     .practice-label { display: none; }
     .practice-grid { grid-template-columns: 1fr; }
-    .practice-card {
-      border-right: none !important;
-      padding: 2.5rem 1.5rem;
-    }
-    .practice-card:nth-last-child(-n+3) {
-      border-bottom: 0.5px solid var(--rule) !important;
-    }
+    .practice-card { border-right: none !important; padding: 2.5rem 1.5rem; }
+    .practice-card:nth-last-child(-n+3) { border-bottom: 0.5px solid var(--rule) !important; }
     .practice-card:last-child { border-bottom: none !important; }
-
     .contact { grid-template-columns: 1fr; }
-    .contact-left {
-      border-right: none;
-      border-bottom: 0.5px solid var(--rule);
-      padding: 3rem 1.5rem;
-    }
+    .contact-left { border-right: none; border-bottom: 0.5px solid var(--rule); padding: 3rem 1.5rem; }
     .contact-left h2 { font-size: clamp(2.2rem, 10vw, 3.5rem); margin-bottom: 2rem; }
     .contact-right { padding: 2.5rem 1.5rem; }
-
-    footer {
-      padding: 1.5rem;
-      flex-direction: column;
-      gap: 0.4rem;
-      text-align: center;
-    }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.4rem; text-align: center; }
   }
 </style>
 </head>
@@ -555,7 +533,7 @@
     <h2>Let's build<br><em>something</em><br>real.</h2>
 <div class="contact-detail">
       <p class="contact-detail-label">Email</p>
-      <p class="contact-detail-value">studio(at)ateliernonfiction.com</p>
+      <p class="contact-detail-value"><a href="/cdn-cgi/l/email-protection#d1a2a5a4b5b8be91b0a5b4bdb8b4a3bfbebfb7b8b2a5b8bebfffb2bebc"><span class="__cf_email__" data-cfemail="a7d4d3d2c3cec8e7c6d3c2cbcec2d5c9c8c9c1cec4d3cec8c989c4c8ca">[email&#160;protected]</span></a></p>
     </div>
     <div class="contact-detail">
       <p class="contact-detail-label">Web</p>
@@ -570,4 +548,21 @@
     <p class="contact-note">
       We welcome inquiries from broadcasters, cultural institutions, co-producers, and funding bodies across Europe and beyond.
     </p>
-  <
+  <  </div>
+</section>
+
+<footer>
+  <span class="footer-legal">© 2026 Atelier Non-Fiction UG (haftungsbeschränkt)</span>
+  <span class="footer-year">Berlin</span>
+  <p class="footer-impressum">
+    <strong>Impressum</strong> &mdash;
+    Atelier Non-Fiction UG (haftungsbeschränkt) &middot;
+    Registergericht: Amtsgericht Charlottenburg &middot;
+    HRB 285270 B &middot;
+    Verantwortlich: Karim Ben Khelifa &middot;
+    studio(at)ateliernonfiction.com
+  </p>
+</footer>
+
+</body>
+</html>
