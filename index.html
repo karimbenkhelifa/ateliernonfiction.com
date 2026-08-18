@@ -6,256 +6,108 @@
   <title>Atelier Non-Fiction</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg:    #f0eeea;
       --ink:   #111110;
-      --mid:   #c8c5bf;
       --muted: #999690;
-      --rule:  #dddbd6;
+      --mid:   #c8c5bf;
       --mono:  'JetBrains Mono', monospace;
     }
-    html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--mono); -webkit-font-smoothing: antialiased; }
-
-    /* ── INTRO ── */
-    #intro {
-      position: fixed; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: var(--bg); z-index: 100; transition: opacity 0.7s ease;
-      text-align: center; padding: 2rem;
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
     }
-    #intro.out { opacity: 0; pointer-events: none; }
-    .intro-studio { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 3.5rem; }
-    .typewriter-wrap { max-width: 560px; display: flex; align-items: flex-start; justify-content: center; }
-    #tw { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 300; line-height: 1.75; color: var(--ink); font-style: italic; text-align: center; }
-    .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--ink); vertical-align: text-bottom; margin-left: 1px; animation: blink 0.85s step-end infinite; }
+
+    #screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .label {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+    }
+
+    #tw {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--ink);
+      max-width: 520px;
+      min-height: 4rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--ink);
+      vertical-align: text-bottom;
+      margin-left: 1px;
+      animation: blink 0.85s step-end infinite;
+    }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
     .cursor.done { animation: none; opacity: 0; }
-    .enter-btn {
-      margin-top: 3rem; font-family: var(--mono); font-size: 0.58rem; font-weight: 400;
-      letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted);
-      background: none; border: none; border-bottom: 1px solid var(--mid);
-      cursor: pointer; opacity: 0; transition: opacity 0.5s, color 0.2s; padding: 0.5rem 0;
+
+    .soon {
+      margin-top: 4rem;
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mid);
+      opacity: 0;
+      transition: opacity 1s ease;
     }
-    .enter-btn.show { opacity: 1; }
-    .enter-btn:hover { color: var(--ink); border-color: var(--ink); }
+    .soon.show { opacity: 1; }
 
-    /* ── APP ── */
-    #app {
-      position: fixed; inset: 0; opacity: 0; pointer-events: none;
-      transition: opacity 0.7s ease;
-      display: grid; grid-template-rows: auto 1fr auto;
-    }
-    #app.visible { opacity: 1; pointer-events: all; }
-
-    /* Top bar */
-    .topbar { border-bottom: 1px solid var(--rule); padding: 1.1rem 2.5rem; display: flex; justify-content: space-between; align-items: center; }
-    .topbar-brand { font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; color: var(--ink); }
-    .topbar-right { display: flex; gap: 2.5rem; }
-    .topbar-link {
-      font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); background: none; border: none; font-family: var(--mono); cursor: pointer; transition: color 0.2s;
-    }
-    .topbar-link:hover, .topbar-link.active { color: var(--ink); }
-
-    /* ── PROJECTS ── */
-    #view-projects { overflow-y: auto; display: flex; flex-direction: column; }
-    .project-row { border-bottom: 1px solid var(--rule); cursor: pointer; transition: background 0.15s; flex-shrink: 0; }
-    .project-row:hover { background: rgba(0,0,0,0.02); }
-    .project-row.open  { background: rgba(0,0,0,0.025); }
-
-    .project-summary { padding: 2rem 2.5rem; display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 2rem; align-items: baseline; }
-    .proj-num { font-size: 0.55rem; font-weight: 400; letter-spacing: 0.2em; color: var(--muted); }
-    .proj-name { font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 300; letter-spacing: -0.01em; color: var(--ink); }
-    .proj-name em { font-style: italic; font-weight: 100; }
-    .proj-type { font-size: 0.55rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
-    .proj-toggle { font-size: 1rem; font-weight: 100; color: var(--mid); transition: transform 0.3s, color 0.2s; line-height: 1; }
-    .project-row.open .proj-toggle { transform: rotate(45deg); color: var(--ink); }
-
-    .project-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1); }
-    .project-detail.open { grid-template-rows: 1fr; }
-    .project-detail-inner { overflow: hidden; }
-
-    .project-detail-body {
-      padding: 0 2.5rem 3rem calc(2.5rem + 4.5rem);
-      display: grid; grid-template-columns: 1fr 300px; gap: 3rem; align-items: start;
-    }
-
-    .detail-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; margin-bottom: 1.5rem; }
-    .detail-desc { font-size: 0.82rem; font-weight: 300; line-height: 1.95; color: #666; }
-    .detail-desc p { margin-bottom: 1rem; }
-    .detail-desc p:last-child { margin-bottom: 0; }
-
-    .meta-item { border-top: 1px solid var(--rule); padding: 0.75rem 0; }
-    .meta-item:last-child { border-bottom: 1px solid var(--rule); }
-    .meta-key { font-size: 0.5rem; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
-    .meta-val { font-size: 0.72rem; font-weight: 300; color: var(--ink); line-height: 1.6; }
-
-    /* ── ABOUT / CONTACT ── */
-    #view-about, #view-contact { overflow-y: auto; display: none; align-items: center; justify-content: center; padding: 4rem 2.5rem; }
-    #view-about.active, #view-contact.active { display: flex; }
-
-    .about-inner, .contact-inner { max-width: 520px; width: 100%; text-align: center; }
-    .about-inner p { font-size: 0.85rem; font-weight: 300; line-height: 1.95; color: #666; margin-bottom: 1rem; }
-    .about-inner p:last-child { margin-bottom: 0; }
-    .about-inner p strong { color: var(--ink); font-weight: 400; }
-
-    .contact-heading { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
-    .contact-tagline { font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 300; font-style: italic; color: var(--ink); margin-bottom: 2.5rem; line-height: 1.5; }
-
-    .msg-field {
-      width: 100%; margin-bottom: 0.75rem; font-family: var(--mono); font-size: 0.75rem; font-weight: 300;
-      color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--mid);
-      padding: 0.6rem 0; outline: none; transition: border-color 0.2s;
-    }
-    .msg-field:focus { border-color: var(--ink); }
-    .msg-field::placeholder { color: var(--muted); }
-    textarea.msg-field { resize: none; height: 100px; margin-top: 0.75rem; }
-    .msg-submit {
-      margin-top: 1.5rem; font-family: var(--mono); font-size: 0.58rem; font-weight: 400;
-      letter-spacing: 0.25em; text-transform: uppercase; color: var(--bg); background: var(--ink);
-      border: none; padding: 0.75rem 2rem; cursor: pointer; transition: opacity 0.2s; width: 100%;
-    }
-    .msg-submit:hover { opacity: 0.75; }
-    .msg-sent { font-size: 0.72rem; color: var(--muted); margin-top: 1rem; display: none; }
-
-    /* ── FOOTER ── */
-    .impressum { border-top: 1px solid var(--rule); padding: 0.65rem 2.5rem; font-size: 0.48rem; font-weight: 300; letter-spacing: 0.05em; color: var(--mid); line-height: 1.8; text-align: center; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 700px) {
-      .topbar { padding: 1rem 1.25rem; }
-      .topbar-brand { font-size: 0.75rem; }
-      .topbar-right { gap: 1.2rem; }
-      .topbar-link { font-size: 0.6rem; }
-      .project-summary { padding: 1.5rem 1.25rem; gap: 1rem; }
-      .project-detail-body { padding: 0 1.25rem 2rem 1.25rem; grid-template-columns: 1fr; gap: 2rem; }
-      #view-about, #view-contact { padding: 2.5rem 1.5rem; }
-      .impressum { padding: 0.65rem 1.25rem; }
+    footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem 2rem;
+      font-size: 0.48rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+      text-align: center;
+      line-height: 1.8;
     }
   </style>
 </head>
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <p class="intro-studio">Atelier Non-Fiction &mdash; Berlin</p>
-  <div class="typewriter-wrap"><div id="tw"></div></div>
-  <button class="enter-btn" id="enter-btn" onclick="enterApp()">Enter &rarr;</button>
+<div id="screen">
+  <p class="label">Atelier Non-Fiction &mdash; Berlin</p>
+  <div id="tw"></div>
+  <p class="soon" id="soon">Under construction &mdash; come back soon.</p>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <header class="topbar">
-    <span class="topbar-brand">Atelier Non-Fiction</span>
-    <div class="topbar-right">
-      <button class="topbar-link active" id="tab-work" onclick="showView('work')">Work</button>
-      <button class="topbar-link" id="tab-about" onclick="showView('about')">About us</button>
-      <button class="topbar-link" id="tab-contact" onclick="showView('contact')">Contact</button>
-    </div>
-  </header>
-
-  <div id="view-projects">
-
-    <!-- 001 The Perimeter -->
-    <div class="project-row" id="row-001" onclick="toggleProject('001')">
-      <div class="project-summary">
-        <span class="proj-num">001</span>
-        <div>
-          <div class="proj-name"><em>The</em> Perimeter</div>
-          <div class="proj-type">Sound Installation &mdash; 360&deg; Spatial Audio &mdash; 2026</div>
-        </div>
-        <span class="proj-toggle">+</span>
-      </div>
-      <div class="project-detail" id="detail-001">
-        <div class="project-detail-inner">
-          <div class="project-detail-body">
-            <div>
-              <img class="detail-image" src="perimeter.jpg" alt="The Perimeter — SOHA Gallery, Kyoto 2026">
-              <div class="detail-desc">
-                <p>Up to four blindfolded visitors stand at the center of an eight-speaker circle at ear height. Built from field recordings gathered across conflicts since 1998 &mdash; Kosovo, Afghanistan, Iraq, Syria, Ukraine &mdash; the work tells the story of War through listening rather than images.</p>
-                <p>Proximity, rhythm, and silence carry the emotion. Nothing shouts. The ear is the trigger; listening is the interface; imagination does the seeing.</p>
-              </div>
-            </div>
-            <div>
-              <div class="meta-item"><p class="meta-key">Status</p><p class="meta-val">Prototype completed &mdash; SOHA Gallery, Kyoto 2026</p></div>
-              <div class="meta-item"><p class="meta-key">Medium</p><p class="meta-val">Sound-only, 8-speaker circle, 360&deg; spatial audio</p></div>
-              <div class="meta-item"><p class="meta-key">Support</p><p class="meta-val">Yamauchi No. 10 Family Office (residency)</p></div>
-              <div class="meta-item"><p class="meta-key">Production</p><p class="meta-val">Atelier Non-Fiction UG, Berlin</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 002 In 36,000 Ways -->
-    <div class="project-row" id="row-002" onclick="toggleProject('002')">
-      <div class="project-summary">
-        <span class="proj-num">002</span>
-        <div>
-          <div class="proj-name"><em>In</em> 36,000 Ways</div>
-          <div class="proj-type">Sensory Installation &mdash; Live Biofeedback &mdash; 2024</div>
-        </div>
-        <span class="proj-toggle">+</span>
-      </div>
-      <div class="project-detail" id="detail-002">
-        <div class="project-detail-inner">
-          <div class="project-detail-body">
-            <div>
-              <img class="detail-image" src="in36k.jpg" alt="In 36,000 Ways — installation view">
-              <div class="detail-desc">
-                <p>When a missile strikes, it can produce up to 36,000 shrapnels like the one the visitor holds in their hand.</p>
-                <p>Fragments collected from the front lines of southern Ukraine. Visitors stand inside a suspended cloud of several hundred fragments, frozen in the air. Spatial sound and live biofeedback compose the soundscape based on their physiological response.</p>
-                <p>Technologies used to kill and destroy, repurposed to care and feel presence.</p>
-              </div>
-            </div>
-            <div>
-              <div class="meta-item"><p class="meta-key">Status</p><p class="meta-val">2024 &mdash; Ongoing</p></div>
-              <div class="meta-item"><p class="meta-key">Exhibitions</p><p class="meta-val">Gallery Anahita Sadighi, Berlin 2024 &middot; IDFA DocLab, Amsterdam 2025 &middot; TecArt, Rotterdam 2026 &middot; La Mostra, Venice 2026</p></div>
-              <div class="meta-item"><p class="meta-key">Co-production</p><p class="meta-val">Atelier Non-Fiction UG &middot; Kling Klang Klong, Berlin</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ABOUT -->
-  <div id="view-about">
-    <div class="about-inner">
-      <p><strong>Atelier Non-Fiction</strong> is a boutique production and consulting company founded by Karim Ben Khelifa.</p>
-      <p>We make work that demands to be experienced rather than merely watched. Our practice spans kinetic and sensory installation, responsive environments, spatial sound and extended reality.</p>
-      <p>We conceive and produce original projects, and bring our process and expertise to external collaborations at any stage, from early concept through to delivery.</p>
-      <p>Based in Berlin. Working internationally.</p>
-    </div>
-  </div>
-
-  <!-- CONTACT -->
-  <div id="view-contact">
-    <div class="contact-inner">
-      <p class="contact-heading">Contact</p>
-      <p class="contact-tagline">For production inquiries,<br>co-productions &amp; consulting.</p>
-      <input class="msg-field" type="text" placeholder="Your name" id="msg-name">
-      <input class="msg-field" type="email" placeholder="Your email" id="msg-email">
-      <textarea class="msg-field" placeholder="Your message" id="msg-body"></textarea>
-      <button class="msg-submit" onclick="sendMsg()">Send message &rarr;</button>
-      <p class="msg-sent" id="msg-sent">Message received &mdash; we will be in touch.</p>
-    </div>
-  </div>
-
-  <div class="impressum">
-    Impressum &mdash; Atelier Non-Fiction UG (haftungsbeschr&auml;nkt) &middot; Registergericht: Amtsgericht Charlottenburg &middot; HRB 285270 B &middot; Verantwortlich: Karim Ben Khelifa &middot; studio(at)ateliernonfiction.com
-  </div>
-</div>
+<footer>
+  Atelier Non-Fiction UG (haftungsbeschr&auml;nkt) &middot; Amtsgericht Charlottenburg &middot; HRB 285270 B &middot; studio(at)ateliernonfiction.com
+</footer>
 
 <script>
   const sentence = 'we conceptualize, develop and produce\nprojects that are hard to categorize\nand easy to remember.';
   const tw = document.getElementById('tw');
-  const enterBtn = document.getElementById('enter-btn');
+  const soon = document.getElementById('soon');
   let i = 0;
+
   const cursor = document.createElement('span');
   cursor.className = 'cursor';
   tw.appendChild(cursor);
@@ -269,48 +121,11 @@
       setTimeout(type, ch === '.' ? 450 : ch === ',' ? 200 : 30 + Math.random() * 28);
     } else {
       cursor.classList.add('done');
-      enterBtn.classList.add('show');
+      setTimeout(() => soon.classList.add('show'), 600);
     }
   }
+
   setTimeout(type, 600);
-
-  function enterApp() {
-    document.getElementById('intro').classList.add('out');
-    setTimeout(() => {
-      document.getElementById('intro').style.display = 'none';
-      const app = document.getElementById('app');
-      app.style.opacity = '1';
-      app.style.pointerEvents = 'all';
-    }, 700);
-  }
-
-  function showView(name) {
-    ['work','about','contact'].forEach(v => document.getElementById('tab-' + v).classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    document.getElementById('view-projects').style.display = (name === 'work') ? 'flex' : 'none';
-    document.getElementById('view-about').classList.toggle('active', name === 'about');
-    document.getElementById('view-contact').classList.toggle('active', name === 'contact');
-  }
-
-  function toggleProject(id) {
-    const row = document.getElementById('row-' + id);
-    const detail = document.getElementById('detail-' + id);
-    const isOpen = row.classList.contains('open');
-    document.querySelectorAll('.project-row').forEach(r => r.classList.remove('open'));
-    document.querySelectorAll('.project-detail').forEach(d => d.classList.remove('open'));
-    if (!isOpen) { row.classList.add('open'); detail.classList.add('open'); }
-  }
-
-  function sendMsg() {
-    const name  = document.getElementById('msg-name').value.trim();
-    const email = document.getElementById('msg-email').value.trim();
-    const body  = document.getElementById('msg-body').value.trim();
-    if (!name || !email || !body) return;
-    const subject = encodeURIComponent('Atelier Non-Fiction — Inquiry from ' + name);
-    const mb = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + body);
-    window.location.href = 'mailto:studio@ateliernonfiction.com?subject=' + subject + '&body=' + mb;
-    document.getElementById('msg-sent').style.display = 'block';
-  }
 </script>
 </body>
 </html>
