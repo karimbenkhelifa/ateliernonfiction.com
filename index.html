@@ -22,17 +22,23 @@
       color: var(--ink);
       font-family: var(--mono);
       -webkit-font-smoothing: antialiased;
+      overflow: hidden;
     }
 
-    #screen {
-      min-height: 100vh;
+    /* ── SHARED ── */
+    .screen {
+      position: fixed;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 2rem;
+      transition: opacity 0.7s ease;
     }
+    .screen.out { opacity: 0; pointer-events: none; }
+    .screen.hidden { display: none; }
 
     .label {
       font-size: 0.6rem;
@@ -43,6 +49,7 @@
       margin-bottom: 3.5rem;
     }
 
+    /* ── INTRO ── */
     #tw {
       font-size: clamp(1rem, 2vw, 1.2rem);
       font-weight: 300;
@@ -65,18 +72,39 @@
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
     .cursor.done { animation: none; opacity: 0; }
 
-    .soon {
-      margin-top: 4rem;
+    .enter-btn {
+      margin-top: 3rem;
+      font-family: var(--mono);
       font-size: 0.58rem;
       font-weight: 400;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--mid);
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--mid);
+      cursor: pointer;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 0.5s, color 0.2s;
+      padding: 0.5rem 0;
     }
-    .soon.show { opacity: 1; }
+    .enter-btn.show { opacity: 1; }
+    .enter-btn:hover { color: var(--ink); border-color: var(--ink); }
 
+    /* ── LANDING ── */
+    #landing { opacity: 0; }
+    #landing.visible { opacity: 1; }
+
+    .landing-text {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.85;
+      color: var(--ink);
+      max-width: 480px;
+    }
+
+    /* ── FOOTER ── */
     footer {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -92,10 +120,17 @@
 </head>
 <body>
 
-<div id="screen">
+<!-- INTRO -->
+<div class="screen" id="intro">
   <p class="label">Atelier Non-Fiction &mdash; Berlin</p>
   <div id="tw"></div>
-  <p class="soon" id="soon">Under construction &mdash; come back soon.</p>
+  <button class="enter-btn" id="enter-btn" onclick="enter()">Enter &rarr;</button>
+</div>
+
+<!-- LANDING -->
+<div class="screen hidden" id="landing">
+  <p class="label">Atelier Non-Fiction &mdash; Berlin</p>
+  <p class="landing-text">We are building something cool for our website,<br>aka, we are still under construction.<br>Come back soon&nbsp;!</p>
 </div>
 
 <footer>
@@ -105,7 +140,7 @@
 <script>
   const sentence = 'we conceptualize, develop and produce\nprojects that are hard to categorize\nand easy to remember.';
   const tw = document.getElementById('tw');
-  const soon = document.getElementById('soon');
+  const enterBtn = document.getElementById('enter-btn');
   let i = 0;
 
   const cursor = document.createElement('span');
@@ -121,11 +156,22 @@
       setTimeout(type, ch === '.' ? 450 : ch === ',' ? 200 : 30 + Math.random() * 28);
     } else {
       cursor.classList.add('done');
-      setTimeout(() => soon.classList.add('show'), 600);
+      setTimeout(() => enterBtn.classList.add('show'), 600);
     }
   }
 
   setTimeout(type, 600);
+
+  function enter() {
+    const intro = document.getElementById('intro');
+    const landing = document.getElementById('landing');
+    intro.classList.add('out');
+    setTimeout(() => {
+      intro.classList.add('hidden');
+      landing.classList.remove('hidden');
+      setTimeout(() => landing.classList.add('visible'), 30);
+    }, 700);
+  }
 </script>
 </body>
 </html>
